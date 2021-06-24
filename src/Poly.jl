@@ -1488,7 +1488,6 @@ function pseudorem(f::PolyElem{T}, g::PolyElem{T}) where T <: RingElement
   end
   k = length(f) - length(g) + 1
   b = coeff(g, length(g) - 1)
-  x = gen(parent(f))
   while length(f) >= length(g)
      f = f*b - shift_left(coeff(f, length(f) - 1)*g, length(f) - length(g))
      k -= 1

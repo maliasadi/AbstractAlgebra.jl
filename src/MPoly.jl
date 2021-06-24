@@ -1111,6 +1111,7 @@ end
 
 function rand(rng::AbstractRNG, sp::SamplerTrivial{<:Make4{
                  <:RingElement,<:AbstractAlgebra.MPolyRing,UnitRange{Int},UnitRange{Int}}})
+   print("rand is called... ")
    S, term_range, exp_bound, v = sp[][1:end]
    f = S()
    g = gens(S)

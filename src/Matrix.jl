@@ -1777,6 +1777,7 @@ end
 Return the determinant of the matrix $M$. We assume $M$ is square.
 """
 function det(M::MatrixElem{T}) where {T <: FieldElement}
+   print("det is running ... ")
    !issquare(M) && error("Not a square matrix in det")
    if nrows(M) == 0
       return one(base_ring(M))
@@ -1790,6 +1791,7 @@ end
 Return the determinant of the matrix $M$. We assume $M$ is square.
 """
 function det(M::MatrixElem{T}) where {T <: RingElement}
+   print("det is running ... ")
    !issquare(M) && error("Not a square matrix in det")
    if nrows(M) == 0
       return one(base_ring(M))

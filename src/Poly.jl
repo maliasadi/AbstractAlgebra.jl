@@ -1483,13 +1483,16 @@ Return the pseudoremainder of $f$ divided by $g$. If $g = 0$ we throw a
 function pseudorem(f::PolyElem{T}, g::PolyElem{T}) where T <: RingElement
   check_parent(f, g)
   iszero(g) && throw(DivideError())
-  if length(f) < length(g)
+  lf = length(f) 
+  lg = length(g)
+  if lf < lg
      return f
   end
-  k = length(f) - length(g) + 1
-  b = coeff(g, length(g) - 1)
-  while length(f) >= length(g)
-     f = f*b - shift_left(coeff(f, length(f) - 1)*g, length(f) - length(g))
+  k = lf - lg + 1
+  b = coeff(g, lg - 1)
+  while lf >= lg
+     f = f*b - shift_left(coeff(f, lf - 1)*g, lf - lg)
+     lf = length(f)
      k -= 1
   end
   return f*b^k
@@ -1504,21 +1507,24 @@ of $f$ divided by $g$. If $g = 0$ we throw a `DivideError()`.
 function pseudodivrem(f::PolyElem{T}, g::PolyElem{T}) where T <: RingElement
   check_parent(f, g)
   iszero(g) && throw(DivideError())
-  if length(f) < length(g)
+  lf = length(f) 
+  lg = length(g)
+  if lf < lg
      return zero(parent(f)), f
   end
-  lenq = length(f) - length(g) + 1
+  lenq = lf - lg + 1
   k = lenq
   q = parent(f)()
   fit!(q, lenq)
-  b = coeff(g, length(g) - 1)
+  b = coeff(g, lg - 1)
   x = gen(parent(f))
-  while length(f) >= length(g)
-     for i = length(f) - length(g) + 2:lenq
+  while lf >= lg
+     for i = lf - lg + 2:lenq
         q = setcoeff!(q, i - 1, coeff(q, i - 1) * b)
      end
-     q = setcoeff!(q, length(f) - length(g), coeff(f, length(f) - 1))
-     f = f*b - shift_left(coeff(f, length(f) - 1)*g, length(f) - length(g))
+     q = setcoeff!(q, lf - lg, coeff(f, lf - 1))
+     f = f*b - shift_left(coeff(f, lf - 1)*g, lf - lg)
+     lf = length(f)
      k -= 1
   end
   while lenq > 0 && iszero(coeff(q, lenq - 1))
